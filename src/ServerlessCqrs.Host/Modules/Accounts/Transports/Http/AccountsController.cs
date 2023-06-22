@@ -27,23 +27,18 @@ public class AccountsController : ControllerBase
         };
     }
 
-    [HttpPost("increase")]
-    public async Task<IActionResult> Increase(IncreaseAccountValueCommand command)
+    [HttpPost]
+    public async Task<IActionResult> Post(PostAccountModel model)
     {
+        var command = new IncreaseAccountValueCommand
+        {
+            AccountId = Guid.NewGuid(),
+            Amount = model.Amount
+        };
         await service
             .Execute(command)
             .ConfigureAwait(false);
 
-        return NoContent();
-    }
-
-    [HttpPost("decrease")]
-    public async Task<IActionResult> Decrease(DecreaseAccountValueCommand command)
-    {
-        await service
-            .Execute(command)
-            .ConfigureAwait(false);
-
-        return NoContent();
+        return Created($"api/accounts/{command.AccountId}", new { Id = command.AccountId });
     }
 }

@@ -1,6 +1,6 @@
 namespace ServerlessCqrs.Host.Modules.Transactions;
 
-public record Transaction(Guid Id, Guid SourceAccountId, Guid DestinationAccountId, int Value);
+public record Transaction(Guid Id, Guid SourceAccountId, Guid DestinationAccountId, int Amount);
 
 public class RegisterTransactionCommand : CommandBase
 {

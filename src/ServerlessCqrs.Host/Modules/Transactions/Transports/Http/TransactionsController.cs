@@ -30,10 +30,11 @@ public class TransactionsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(PostTransactionModel model)
     {
+        var transactionId = Guid.NewGuid();
         var command = new RegisterTransactionCommand
         {
-            CorrelationId = Guid.NewGuid(),
-            TransactionId = Guid.NewGuid(),
+            CorrelationId = transactionId,
+            TransactionId = transactionId,
             SourceAccountId = model.SourceAccountId,
             DestinationAccountId = model.DestinationAccountId,
             Amount = model.Amount
