@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  host:
+    build:
+      context: .
+      dockerfile: Host.Dockerfile
+    ports:
+      - "8080:80"
+
+  host-dapr:
+    image: "daprio/daprd:latest"
+    command: [ "./daprd", 
+      "-app-id", "host", 
+      "-app-port", "80",
+      "-components-path", "./components" ] 
+    volumes:
+      - "./dapr/components/:/components"
+    depends_on:
+      - host
+    network_mode: "service:host"
