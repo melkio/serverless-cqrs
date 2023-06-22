@@ -1,0 +1,16 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: transactions_state_store
+spec:
+  type: state.azure.cosmosdb
+  version: v1
+  metadata:
+  - name: url
+    value: https://fdc60865.documents.azure.com:443/
+  - name: masterKey
+    value: 2nUuZfTapGmjOtos93hLp03BWyE5FFNeHLkEQjXzaqQWYYgUWfLSuGJGiuUfWkMdIP6diAy6Vk6gACDb9lXP3g==
+  - name: database
+    value: serverless_cqrs
+  - name: collection
+    value: transactions
