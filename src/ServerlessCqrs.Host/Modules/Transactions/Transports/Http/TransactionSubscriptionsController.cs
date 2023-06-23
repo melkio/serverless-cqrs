@@ -55,4 +55,27 @@ public class TransactionSubscriptionsController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPost("destination-account-increased")]
+    [Topic("asb_pub_sub", nameof(AccountValueIncreasedEvent))]
+    public async Task<IActionResult> DestinationAccountIncreased(AccountValueIncreasedEvent @event)
+    {
+        var (transaction, _) = await service
+            .Get(@event.CorrelationId)
+            .ConfigureAwait(false);
+
+        if (transaction != null)
+        {
+            var command = new CompleteTransactionCommand
+            {
+                CorrelationId = @event.CorrelationId,
+                TransactionId = transaction.Id
+            };
+            await service
+                .Execute(command)
+                .ConfigureAwait(false);
+        }
+
+        return NoContent();
+    }
 }

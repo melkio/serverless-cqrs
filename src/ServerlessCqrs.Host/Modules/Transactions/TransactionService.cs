@@ -4,6 +4,7 @@ public interface ITransactionsService
 {
     Task<(Transaction, string)> Get(Guid id);
     Task Execute(RegisterTransactionCommand command);
+    Task Execute(CompleteTransactionCommand command);
 }
 
 public class TransactionsService : ITransactionsService
@@ -29,7 +30,14 @@ public class TransactionsService : ITransactionsService
         if (transaction is not null)
             throw new InvalidOperationException("Transaction already exists");
 
-        transaction = new Transaction(command.TransactionId, command.SourceAccountId, command.DestinationAccountId, command.Amount);
+        transaction = new Transaction
+        (
+            command.TransactionId, 
+            command.SourceAccountId, 
+            command.DestinationAccountId, 
+            command.Amount,
+            TransactionStatus.Pending
+        );
 
         await repository
             .Upsert(transaction)
@@ -42,6 +50,32 @@ public class TransactionsService : ITransactionsService
             SourceAccountId = command.SourceAccountId,
             DestinationAccountId = command.DestinationAccountId,
             Amount = command.Amount
+        };
+        await notifier
+            .Notify(@event)
+            .ConfigureAwait(false);
+    }
+
+    public async Task Execute(CompleteTransactionCommand
+     command)
+    {
+        var (transaction, etag) = await repository
+            .Get(command.TransactionId)
+            .ConfigureAwait(false);
+
+        if (transaction is null)
+            throw new InvalidOperationException("Transaction does not exist");
+
+        var newTransaction = transaction with { Status = TransactionStatus.Completed };
+
+        await repository
+            .Upsert(newTransaction, etag)
+            .ConfigureAwait(false);
+
+        var @event = new TransactionCompletedEvent
+        {
+            CorrelationId = command.CorrelationId,
+            TransactionId = command.TransactionId
         };
         await notifier
             .Notify(@event)
