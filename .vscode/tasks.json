@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/ServelessCqrs.Host.sln"
+                "${workspaceFolder}/ServelessCqrs.sln"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -17,7 +17,7 @@
             "type": "process",
             "args": [
                 "test",
-                "${workspaceFolder}/ServelessCqrs.Host.sln",
+                "${workspaceFolder}/ServelessCqrs.sln",
             ],
             "problemMatcher": "$msCompile",
             "group": "test"
