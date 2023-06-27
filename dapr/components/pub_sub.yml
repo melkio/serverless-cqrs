@@ -7,6 +7,6 @@ spec:
   version: v1
   metadata:
   - name: connectionString
-    value: "Endpoint=sb://d5bb12d7.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=meySqHG18+wdtrfpjCM8s8SW7EG4ugB2J+ASbMuMLEY="
+    value: PUT_VALUE_HERE
 scopes:
   - host

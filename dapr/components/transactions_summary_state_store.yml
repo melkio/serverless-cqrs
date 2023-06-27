@@ -7,9 +7,9 @@ spec:
   version: v1
   metadata:
   - name: url
-    value: https://fdc60865.documents.azure.com:443/
+    value: PUT_VALUE_HERE
   - name: masterKey
-    value: 2nUuZfTapGmjOtos93hLp03BWyE5FFNeHLkEQjXzaqQWYYgUWfLSuGJGiuUfWkMdIP6diAy6Vk6gACDb9lXP3g==
+    value: PUT_VALUE_HERE
   - name: database
     value: serverless_cqrs
   - name: collection
